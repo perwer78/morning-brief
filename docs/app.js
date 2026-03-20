@@ -50,12 +50,6 @@ async function loadReport(dateISO) {
 
     const data = await res.json();
 
-    // Configure marked options
-    marked.setOptions({
-      breaks: true,
-      gfm: true,
-    });
-
     // Content is already structured HTML — inject directly
     document.getElementById("report-content").innerHTML = data.content || "";
 
