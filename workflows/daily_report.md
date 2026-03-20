@@ -4,7 +4,8 @@
 Generate a comprehensive daily financial report every Mon-Fri and publish it to the GitHub Pages web page, ready to read at 8:00 AM CST.
 
 ## Inputs Required
-- `ANTHROPIC_API_KEY` — set as GitHub Actions secret (and in `.env` for local testing)
+- `GOOGLE_API_KEY` — set as GitHub Actions secret (and in `.env` for local testing)
+  - Obtén tu key GRATIS en https://aistudio.google.com → "Get API key"
 - Today's date — injected automatically by the script
 
 ## Execution
@@ -15,9 +16,9 @@ Runs automatically via GitHub Actions cron (`0 14 * * 1-5` = 8 AM CST Mon-Fri).
 
 ## What the Tool Does
 1. Builds the Morning Brief prompt with today's date
-2. Calls `claude-sonnet-4-6` with the `web_search_20250305` tool
-3. Claude autonomously searches CNBC, Bloomberg, FT, Reuters, CoinDesk, El Financiero, etc.
-4. Runs an agentic loop until Claude signals `end_turn`
+2. Calls `gemini-2.0-flash` with the Google Search grounding tool (free tier)
+3. Gemini autonomously searches CNBC, Bloomberg, FT, Reuters, CoinDesk, El Financiero, etc.
+4. Single API call — Google handles all search orchestration internally
 5. Saves the Markdown report to `docs/reports/YYYY-MM-DD.json`
 6. Updates `docs/reports/manifest.json` (list of all available dates for the archive)
 7. GitHub Actions commits and pushes both files

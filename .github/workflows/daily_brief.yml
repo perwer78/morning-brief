@@ -27,7 +27,8 @@ jobs:
 
       - name: Generate Morning Brief
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python tools/generate_report.py
 
       - name: Commit and push report
