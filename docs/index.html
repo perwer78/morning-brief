@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Morning Brief</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🌅</span>
+        <span class="logo-text">Morning Brief</span>
+      </div>
+      <div class="header-meta" id="header-meta">—</div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <button class="tab active" id="tab-today" onclick="showToday()">HOY</button>
+      <div class="archive-wrapper">
+        <button class="tab" id="tab-archive" onclick="toggleArchive()">
+          ARCHIVO <span class="arrow" id="archive-arrow">▾</span>
+        </button>
+        <div class="archive-dropdown" id="archive-dropdown"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div id="report-container">
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Cargando reporte...</p>
+      </div>
+      <div class="report-content hidden" id="report-content"></div>
+      <div class="empty-state hidden" id="empty-state">
+        <div class="empty-icon">📭</div>
+        <h2>Reporte no disponible aún</h2>
+        <p>El Morning Brief de hoy se genera automáticamente a las 8:00 AM CST (lunes a viernes).</p>
+        <p class="empty-sub">Vuelve más tarde o revisa el archivo para reportes anteriores.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Morning Brief · Generado con Claude AI · Datos con fines informativos únicamente</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

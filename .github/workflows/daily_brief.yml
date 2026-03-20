@@ -1,0 +1,40 @@
+name: Morning Brief — Daily Report
+
+on:
+  # Mon–Fri at 14:00 UTC = 8:00 AM CST / 9:00 AM CDT
+  schedule:
+    - cron: "0 14 * * 1-5"
+  # Allow manual trigger from GitHub Actions UI for testing
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # needed to commit the generated report
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate Morning Brief
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python tools/generate_report.py
+
+      - name: Commit and push report
+        run: |
+          git config user.name "morning-brief-bot"
+          git config user.email "bot@morning-brief"
+          git add docs/reports/
+          # Only commit if there are changes
+          git diff --staged --quiet || git commit -m "report: $(date -u +%Y-%m-%d) Morning Brief"
+          git push
