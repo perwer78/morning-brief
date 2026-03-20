@@ -34,8 +34,12 @@ REPORTS_DIR = Path(__file__).parent.parent / "docs" / "reports"
 # Whitepaper.mx source expires April 7 2026
 WHITEPAPER_ACTIVE = date.today() <= date(2026, 4, 7)
 
-TODAY = date.today().strftime("%A, %B %d, %Y")
-TODAY_ES = date.today().strftime("%A %d de %B, %Y")
+_DAYS_ES = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
+_MONTHS_ES = ["enero","febrero","marzo","abril","mayo","junio",
+               "julio","agosto","septiembre","octubre","noviembre","diciembre"]
+_today = date.today()
+TODAY = _today.strftime("%A, %B %d, %Y")
+TODAY_ES = f"{_DAYS_ES[_today.weekday()]} {_today.day} de {_MONTHS_ES[_today.month - 1]}, {_today.year}"
 
 # Targeted search queries — one per report section
 SEARCH_QUERIES = [
@@ -65,77 +69,120 @@ WSJ, The Economist, CoinDesk, Reuters, El Financiero, Banxico, IMF, TradingView.
 {news_context}
 ===========================================
 
-Generate the complete Morning Brief in Markdown with this EXACT structure:
+OUTPUT FORMAT — CRITICAL RULES:
+- Output ONLY the HTML body content below. No <html>, <head>, <body>, or <style> tags.
+- Use ONLY the CSS classes listed in the component reference below. Do not invent new classes.
+- Every source citation must use: <div class="src">Fuentes: <a href="URL" target="_blank">Name</a>, ...</div>
+- NEVER output raw URLs in visible text. Every URL must be inside an <a> tag.
+- Use specific numbers from the news (index levels, % changes, prices). Do not use placeholders.
+- Write all content in Spanish.
 
-# 🌅 Morning Brief — {today_es}
-*Generado para: Fund Manager | Tiempo de lectura: 5-7 min*
+=== CSS COMPONENT REFERENCE ===
 
----
+TAGS (inline badges before item text):
+  <span class="tag tag-red">GEOPOLÍTICA</span>     ← bad news / risk
+  <span class="tag tag-green">TECH</span>           ← positive / gains
+  <span class="tag tag-orange">INFLACIÓN</span>     ← macro warnings
+  <span class="tag tag-blue">FED</span>             ← central bank / policy
+  <span class="tag tag-accent">EMPRESA</span>       ← corporate news
+  <span class="tag tag-purple">CRYPTO</span>        ← crypto
+  <span class="tag tag-cyan">RWA</span>             ← trends / future
 
-## 📊 1. Macro del Día
+ITEM (bullet news item with optional source):
+  <div class="item">
+    <span class="tag tag-red">LABEL</span>
+    <strong>Headline:</strong> body text.
+    <div class="src">Fuentes: <a href="https://..." target="_blank">Source Name</a></div>
+  </div>
 
-5-6 bullet points covering global markets with specific index levels and % changes,
-major financial headlines, and geopolitical events affecting markets today.
+TABLE (market data, crypto prices, comparisons):
+  <table>
+    <thead><tr><th>Col 1</th><th>Col 2</th><th>Col 3</th></tr></thead>
+    <tbody>
+      <tr><td>Name</td><td class="mono">$1,234</td><td class="val-up">+2.1%</td></tr>
+      <tr><td>Name</td><td class="mono">$5,678</td><td class="val-down">-0.8%</td></tr>
+      <tr><td>Name</td><td class="mono">$9,012</td><td class="val-neutral">flat</td></tr>
+    </tbody>
+  </table>
 
----
+CARD (analysis block, company card, altcoin pick):
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Card Title</div>
+        <div class="card-subtitle">subtitle / exchange / description</div>
+      </div>
+      <span class="risk risk-high">🔴 Riesgo Alto</span>       ← risk-high / risk-med-high / risk-med / risk-low
+    </div>
+    <div class="card-grid">
+      <div class="card-stat"><div class="label">Sector</div><div class="value" style="color:var(--cyan)">Tech</div></div>
+      <div class="card-stat"><div class="label">Precio</div><div class="value val-up">$145 (+13%)</div></div>
+    </div>
+    <div class="card-body">
+      <p><strong>Tesis:</strong> explanation paragraph.</p>
+      <p><strong>Riesgos:</strong> (1) risk one, (2) risk two, (3) risk three.</p>
+    </div>
+    <div class="disclaimer">⚠️ Esto NO constituye consejo de inversión. Solo fines informativos.</div>
+    <div class="src">Fuentes: <a href="https://..." target="_blank">Source</a></div>
+  </div>
 
-## 🏛️ 2. Finanzas Institucionales
+SECTION (wraps each report section):
+  <div class="section">
+    <div class="section-title"><span class="emoji">📊</span> Section Name</div>
+    <!-- items / table / cards here -->
+  </div>
 
-2-3 items on institutional finance: endowments, capital markets, FIBRAs, PE/VC news.
-Use a table when comparing data.
+REPORT HEADER (top of the report):
+  <div class="report-header">
+    <div class="report-header-top">
+      <h1 class="report-title">Morning Brief</h1>
+      <span class="header-badge">BADGE TEXT</span>   ← 1-3 words describing today's mood
+    </div>
+    <div class="report-meta">
+      <span>{today_es}</span>
+      <span>Generado {generated_at} CST</span>
+      <span>Lectura ~6 min</span>
+    </div>
+    <div class="header-summary">
+      <strong>Resumen del día:</strong> 2-3 sentences summarizing the most important stories.
+    </div>
+  </div>
 
----
+REPORT FOOTER:
+  <div class="report-footer">
+    <p>Reporte generado el {today_es} a las {generated_at} CST con datos de fuentes públicas.<br>
+    Este reporte es de carácter informativo y no constituye asesoría de inversión.</p>
+  </div>
 
-## 🎯 3. Empresa del Día — Idea 10X/50X
+=== GENERATE THE MORNING BRIEF NOW ===
 
-Pick one public or private company with high-growth potential. Format:
+Produce the complete report HTML using the structure below. Fill every section with real data from the news provided.
 
-**Empresa:** [Name] | **Sector:** [Sector] | **Mercado:** [Exchange/Private]
-**Cap. Mercado:** [Market cap] | **Riesgo:** 🔴/🟠/🟡 [level]
+<!-- REPORT HEADER -->
+[report-header component — badge reflects today's market mood in 1-3 words]
 
-**Tesis de Inversión:**
-[2-3 paragraphs on catalysts and growth potential]
+<!-- SECTION 1: MACRO DEL DÍA -->
+[section with 5-6 .item components covering global indices with specific levels and % changes, key headlines, geopolitical events]
+[include a market data table with: index/asset, last price, change, signal]
 
-**Riesgos Principales:**
-- [Risk 1]
-- [Risk 2]
-- [Risk 3]
+<!-- SECTION 2: FINANZAS INSTITUCIONALES -->
+[section with 2-3 .card components on endowments, capital markets, FIBRAs, PE/VC, Banxico, sovereign funds]
 
-> ⚠️ Esto NO es una recomendación de inversión. Solo para fines informativos y educativos.
+<!-- SECTION 3: EMPRESA DEL DÍA — Idea 10X/50X -->
+[section with one detailed .card with card-grid (6-8 stats), full investment thesis, and risks. Include disclaimer.]
 
----
+<!-- SECTION 4: CRYPTO PICK DEL DÍA -->
+[section with a crypto price table: BTC, ETH, SOL, XRP + one more top-5 coin with val-up/val-down/val-neutral]
+[followed by one altcoin pick .card with card-grid (4 stats: price, mktcap, ATH, narrative), thesis, risks, disclaimer]
 
-## 🪙 4. Crypto Pick del Día
+<!-- SECTION 5: ENTORNO MACROECONÓMICO -->
+[section with 3 .card components: México 🇲🇽, Estados Unidos 🇺🇸, and a commodities table]
 
-Table with today's prices for BTC, ETH, SOL, XRP + one more top-5 coin.
+<!-- SECTION 6: TENDENCIAS DEL FUTURO -->
+[section with a trends table (Tendencia | Señal reciente | Relevancia para Endowments) covering 3-4 trends]
 
-**Altcoin Pick:**
-One altcoin outside top 5 with investment thesis and risk level. Reference RWA narrative when relevant.
-
----
-
-## 🌎 5. Entorno Macroeconómico
-
-**México 🇲🇽**
-Peso/USD rate, Banxico decisions, inflation, key economic news.
-
-**EE.UU. 🇺🇸**
-Fed policy, employment, inflation (PCE/CPI), equity market conditions.
-
-**Global 🌐**
-IMF projections, geopolitical impacts, commodity prices: WTI oil, Brent oil, gold.
-
----
-
-## 🔮 6. Tendencias del Futuro
-
-3-4 trends on: emerging tech, AI applications, healthcare/longevity, civilization shifts.
-Use a table when showing multiple trends. Connect each to investment implications.
-
----
-
-*Fuentes utilizadas: [list all sources with clickable URLs]*
-*Reporte generado: {generated_at} CST*
+<!-- REPORT FOOTER -->
+[report-footer component]
 """
 
 # ── Search ─────────────────────────────────────────────────────────────────────

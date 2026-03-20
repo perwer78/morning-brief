@@ -56,8 +56,8 @@ async function loadReport(dateISO) {
       gfm: true,
     });
 
-    const html = marked.parse(data.content || "");
-    document.getElementById("report-content").innerHTML = html;
+    // Content is already structured HTML — inject directly
+    document.getElementById("report-content").innerHTML = data.content || "";
 
     // Update header meta
     const genAt = data.generated_at
