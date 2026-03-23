@@ -342,6 +342,12 @@ def save_report(content: str) -> Path:
 # ── Entry point ────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
+    # Idempotency check: skip if today's report already exists
+    today_file = REPORTS_DIR / f"{date.today().isoformat()}.json"
+    if today_file.exists():
+        print(f"Report for {date.today().isoformat()} already exists. Skipping.")
+        sys.exit(0)
+
     report_md = generate_report()
     if not report_md.strip():
         print("ERROR: Empty report returned.", file=sys.stderr)
