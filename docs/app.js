@@ -152,7 +152,22 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ── Theme toggle ──────────────────────────────────────────────────────────────
+
+function toggleTheme() {
+  const isLight = document.body.classList.toggle("light");
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+}
+
+function applyStoredTheme() {
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light");
+  }
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────────
+
+applyStoredTheme();
 
 (async () => {
   await buildArchive();
