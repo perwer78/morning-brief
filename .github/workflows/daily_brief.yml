@@ -1,7 +1,6 @@
 name: Morning Brief — Daily Report
 
 on:
-  schedule:
   workflow_dispatch:
 
 jobs:
