@@ -1,0 +1,5 @@
+{
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T13:01:50.252440",
+  "content": "<!-- REPORT HEADER -->\n<div class=\"struct>\n  <div class=\"report-header\">\n    <div=\"report-header-top\">\n      <h1=\"report-title\">Morning Brief</h1>\n      <span=\"header-badge\" class=\"tag tag-green\">TECH</span>\n    <span>Domingo 20 de septiembre, 2026</span>\n    <span>Generado 2026-09-20 13:00 CST</span>\n    <div=\"header-summary\">\n      <strong>Resumen del día:</strong> Global markets mixed; Banxico holds rates; US Fed inflation at 3.43%; Mexican Peso stable; Endowments shifting toward private equity.\n\n    </div>\n  </div>\n\n  <!-- SECTION 1: MACRO DEL DÍA -->\n  <div class=\"section\">\n    <div=\"section-title\"><span=\"emoji\">📊</span> MACRO DEL DÍA\n    <!-- items / table / cards here -->\n    <div class=\"item\">\n      <span=\"tag tag-red\">GEOPOLÍTICA</span>\n      <strong>=\"report-header-top\">\n  <h1=\"report-title\">Morning Brief</h1>\n  <span=\"header-badge\">BADGE TEXT</span>   ← 1-3 words describing today's mood\n</div>"
+}
